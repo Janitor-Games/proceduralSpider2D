@@ -2,11 +2,13 @@
 using Oddworm.Framework;
 using UnityEngine;
 [DefaultExecutionOrder(0)]
+
 public class playerBodyController : MonoBehaviour
 {
     [Header("General Values And References")]
     public Rigidbody2D rb;
     public playerLegController legL, legR;
+    public playerEyeController eye;
     public Vector2 velocity;
     public bool debugMode;
 
@@ -29,33 +31,56 @@ public class playerBodyController : MonoBehaviour
     public float legCastAdvance;
     private Vector2 legCastPos;
 
+    [Header("Idle State")]
+    public float idleTime;
+    public bool isIdle;
+    private float idleCount;
+
+    [Header("Bobbing Animation")]
+    public float bobHeight;
+    public float normalBobSpeed, idleBobSpeed;
+    private float signBob, currentBobOffset;
+
     void Start()
     {
         getPoints(ref bodyPoint1, ref bodyPoint2, bodyCast, Color.red);
         legCastPos = legCast.localPosition;
+        signBob = 1f;
     }
 
     void Update()
     {
         xInput = inputManager.instance.readVector("PlayerMove").x;
-        if (inputManager.instance.pressed("PlayerDebug"))
-        {
-            debugMode = !debugMode;
-        }
+        idleTimer();
+        if (inputManager.instance.pressed("PlayerDebug")) debugMode = !debugMode;
     }
 
     void FixedUpdate()
     {
+        setBobbing();
         getPoints(ref bodyPoint1, ref bodyPoint2, bodyCast, Color.red);
         setLegCorrection();
-        applyVelocity();
         applyPositionRotation();
+        applyVelocity();
+    }
+    
+    private void idleTimer()
+    {
+        idleCount = (!eye.hasMovedMouse && xInput == 0) ? Mathf.Min(idleCount + Time.deltaTime, idleTime) : 0;
+        isIdle = idleCount >= idleTime;
+    }
+
+    //set currentBobOffset for bobbing animation 
+    private void setBobbing()
+    {
+        currentBobOffset = Mathf.MoveTowards(currentBobOffset, signBob * bobHeight, Time.deltaTime * (isIdle ? idleBobSpeed : normalBobSpeed));
+        if (Mathf.Abs(currentBobOffset) >= bobHeight) signBob *= -1f;
     }
 
     //fires a curved linecast 
     private Vector2 fireCurvedRay(float dirWall, Transform castPosition, Vector2 currentPoint, Color dbgColor)
     {
-        if (debugMode) DbgDraw.Sphere(castPosition.position, transform.rotation, new Vector2(0.5f, 0.5f), dbgColor,0.02f);
+        if (debugMode) DbgDraw.Sphere(castPosition.position, transform.rotation, new Vector2(0.5f, 0.5f), dbgColor, 0.02f);
         //beginning of the line
         var lineS = transform.up * castRad;
         //angle axis creates a rotation with an angle of dirWall*castAngle around the transform.forward vector
@@ -100,11 +125,11 @@ public class playerBodyController : MonoBehaviour
         if (debugMode)
         {
             DbgDraw.Line(bodyPoint1, bodyPoint2, Color.magenta, 0.02f);
-            DbgDraw.Ray((Vector3)(bodyPoint1 + bodyPoint2) / 2f, perp*bodyOffset, Color.black, 0.02f);
-        } 
+            DbgDraw.Ray((Vector3)(bodyPoint1 + bodyPoint2) / 2f, perp * bodyOffset, Color.black, 0.02f);
+        }
         transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(Vector3.forward, perp), Time.deltaTime / rotTime);
         //an offset is put to make the body move above the ground
-        rb.position = Vector3.Slerp(rb.position, (bodyPoint1 + bodyPoint2) / 2 + perp * bodyOffset, Time.deltaTime / posTime);
+        rb.position = Vector3.Slerp(rb.position, (bodyPoint1 + bodyPoint2) / 2 + perp * (bodyOffset + currentBobOffset), Time.deltaTime / posTime);
     }
 
     //legL.point and legR.point are the points where the legs' targets move to
@@ -115,5 +140,4 @@ public class playerBodyController : MonoBehaviour
         legCast.localPosition = legCastPos + (Vector2.right * xInput * legCastAdvance);
         getPoints(ref legL.point, ref legR.point, legCast, Color.green);
     }
-
 }

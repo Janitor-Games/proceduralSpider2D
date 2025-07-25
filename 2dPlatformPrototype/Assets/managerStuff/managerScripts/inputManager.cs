@@ -10,18 +10,23 @@ public class inputManager : genericSingleton<inputManager>
     protected override void Awake()
     {
         base.Awake();
-        player=GetComponent<PlayerInput>();
+        player = GetComponent<PlayerInput>();
     }
 
-    public bool pressed(String name){
-        return player.actions[name].WasPressedThisFrame();
+    public bool pressed(String name)
+    {
+        bool press = player.actions[name].WasPressedThisFrame();
+        return press;
     }
 
-    public bool released(String name){
+    public bool released(String name)
+    {
         return player.actions[name].WasReleasedThisFrame();
     }
 
-    public Vector2 readVector(String name){
-        return player.actions[name].ReadValue<Vector2>();
+    public Vector2 readVector(String name)
+    {
+        Vector2 read = player.actions[name].ReadValue<Vector2>();
+        return read;
     }
 }

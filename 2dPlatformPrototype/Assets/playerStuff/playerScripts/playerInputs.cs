@@ -44,6 +44,15 @@ public partial class @playerInputAsset: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""PlayerMousePos"",
+                    ""type"": ""Value"",
+                    ""id"": ""7c422794-a60e-426e-9e21-0ac67d9d4350"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -110,6 +119,17 @@ public partial class @playerInputAsset: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""PlayerDebug"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7e68591e-1259-4b53-9402-0496da4e7f58"",
+                    ""path"": ""<Mouse>/position"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""PlayerMousePos"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -183,6 +203,7 @@ public partial class @playerInputAsset: IInputActionCollection2, IDisposable
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
         m_Player_PlayerMove = m_Player.FindAction("PlayerMove", throwIfNotFound: true);
         m_Player_PlayerDebug = m_Player.FindAction("PlayerDebug", throwIfNotFound: true);
+        m_Player_PlayerMousePos = m_Player.FindAction("PlayerMousePos", throwIfNotFound: true);
     }
 
     ~@playerInputAsset()
@@ -251,12 +272,14 @@ public partial class @playerInputAsset: IInputActionCollection2, IDisposable
     private List<IPlayerActions> m_PlayerActionsCallbackInterfaces = new List<IPlayerActions>();
     private readonly InputAction m_Player_PlayerMove;
     private readonly InputAction m_Player_PlayerDebug;
+    private readonly InputAction m_Player_PlayerMousePos;
     public struct PlayerActions
     {
         private @playerInputAsset m_Wrapper;
         public PlayerActions(@playerInputAsset wrapper) { m_Wrapper = wrapper; }
         public InputAction @PlayerMove => m_Wrapper.m_Player_PlayerMove;
         public InputAction @PlayerDebug => m_Wrapper.m_Player_PlayerDebug;
+        public InputAction @PlayerMousePos => m_Wrapper.m_Player_PlayerMousePos;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -272,6 +295,9 @@ public partial class @playerInputAsset: IInputActionCollection2, IDisposable
             @PlayerDebug.started += instance.OnPlayerDebug;
             @PlayerDebug.performed += instance.OnPlayerDebug;
             @PlayerDebug.canceled += instance.OnPlayerDebug;
+            @PlayerMousePos.started += instance.OnPlayerMousePos;
+            @PlayerMousePos.performed += instance.OnPlayerMousePos;
+            @PlayerMousePos.canceled += instance.OnPlayerMousePos;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -282,6 +308,9 @@ public partial class @playerInputAsset: IInputActionCollection2, IDisposable
             @PlayerDebug.started -= instance.OnPlayerDebug;
             @PlayerDebug.performed -= instance.OnPlayerDebug;
             @PlayerDebug.canceled -= instance.OnPlayerDebug;
+            @PlayerMousePos.started -= instance.OnPlayerMousePos;
+            @PlayerMousePos.performed -= instance.OnPlayerMousePos;
+            @PlayerMousePos.canceled -= instance.OnPlayerMousePos;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -348,5 +377,6 @@ public partial class @playerInputAsset: IInputActionCollection2, IDisposable
     {
         void OnPlayerMove(InputAction.CallbackContext context);
         void OnPlayerDebug(InputAction.CallbackContext context);
+        void OnPlayerMousePos(InputAction.CallbackContext context);
     }
 }
