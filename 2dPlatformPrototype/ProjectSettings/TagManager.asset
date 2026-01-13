@@ -3,7 +3,8 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 3
-  tags: []
+  tags:
+  - MovingRotating
   layers:
   - Default
   - TransparentFX
@@ -38,11 +39,17 @@ TagManager:
   - 
   - 
   m_SortingLayers:
-  - name: Player
-    uniqueID: 3013844411
-    locked: 0
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: MovingRotating
+    uniqueID: 3238816631
+    locked: 0
+  - name: Player
+    uniqueID: 3553817391
+    locked: 0
+  - name: UI
+    uniqueID: 754899229
     locked: 0
   m_RenderingLayers:
   - Default
