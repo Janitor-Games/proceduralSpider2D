@@ -1,0 +1,195 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &4786697751611325869
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4508326454995804322}
+  - component: {fileID: 1757429126213062305}
+  - component: {fileID: 4741043586664232094}
+  - component: {fileID: 7766222404010866287}
+  - component: {fileID: 2577108501754696562}
+  - component: {fileID: 3403595542571075503}
+  - component: {fileID: 811284766998253415}
+  m_Layer: 0
+  m_Name: playerManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4508326454995804322
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4786697751611325869}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -4.95745, y: 3.48339, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1757429126213062305
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4786697751611325869}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9ad4f08134eaa049a3013eaf60ea004, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  directionVector: {x: 0, y: 0}
+  pressedJump: 0
+  releasedJump: 0
+  mouseGamePos: {x: 0, y: 0}
+  pressedMouse: 0
+  releasedMouse: 0
+  idleTime: 10
+  isIdle: 0
+--- !u!114 &4741043586664232094
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4786697751611325869}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c75f86ff91efb143893b7a181a046a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerPrefab: {fileID: 1069852013641250526, guid: ea7a1e27f68ce6a4d98c467934844d81, type: 3}
+  playerUI: {fileID: 4616483317055136120, guid: 2c87b974179fcd54cbf59f8bb6b49c41, type: 3}
+  input: {fileID: 1757429126213062305}
+  playerHurtEvent: {fileID: 11400000, guid: 5b9db284b79dc2a44b0283d9d9436506, type: 2}
+  playerProjPoolers: {fileID: 7766222404010866287}
+  maxHP: 2
+  playerDeathEvent: {fileID: 11400000, guid: 8a9403ef41d604a47855a215338a87cd, type: 2}
+  playerGibs: {fileID: 6477846468543890770, guid: d59a01bcdf28847499c469eaa033351e, type: 3}
+  screenShake: {fileID: 811284766998253415}
+  respawnTime: 5
+  invincibleTime: 3
+  screenShakeTime: 0.5
+--- !u!114 &7766222404010866287
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4786697751611325869}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b2b742e210c9544199af0e9d4916ca7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::objectPoolers
+  objs:
+  - {fileID: 2438337398573383231, guid: 90e230c68c6d1c349b7622901dea0d05, type: 3}
+  amounts: 14000000
+--- !u!114 &2577108501754696562
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4786697751611325869}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41f0c213c753ec1439bbae4947b03460, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::gameEventListener
+  gameEv: {fileID: 11400000, guid: 0fc3e80bfc3c4d94291cdd8327f3492c, type: 2}
+  triggeredEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4741043586664232094}
+        m_TargetAssemblyTypeName: playerHealthDeathManager, Assembly-CSharp
+        m_MethodName: killThing
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1757429126213062305}
+        m_TargetAssemblyTypeName: playerInputController, Assembly-CSharp
+        m_MethodName: resetIdle
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &3403595542571075503
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4786697751611325869}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 41f0c213c753ec1439bbae4947b03460, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::gameEventListener
+  gameEv: {fileID: 11400000, guid: 8d8115af4984a47439cbea184259e510, type: 2}
+  triggeredEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4741043586664232094}
+        m_TargetAssemblyTypeName: playerHealthDeathManager, Assembly-CSharp
+        m_MethodName: hurtThing
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1757429126213062305}
+        m_TargetAssemblyTypeName: playerInputController, Assembly-CSharp
+        m_MethodName: resetIdle
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &811284766998253415
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4786697751611325869}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68bb026fafb42b14791938953eaace77, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.Cinemachine::Unity.Cinemachine.CinemachineBasicMultiChannelPerlin
+  NoiseProfile: {fileID: 11400000, guid: 69ce8388f6785dd4c8c39915efece2f4, type: 2}
+  PivotOffset: {x: 0, y: 0, z: 0}
+  AmplitudeGain: 10
+  FrequencyGain: 2
+  m_NoiseOffsets: {x: 0, y: 0, z: 0}
